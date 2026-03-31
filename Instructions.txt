@@ -1,0 +1,11 @@
+# Create environment with Python 3.8 and all dependencies
+conda create -n fault_detection python=3.8 flask scikit-learn=0.24.2 joblib numpy -c conda-forge
+
+# Activate
+conda activate fault_detection
+
+# Verify installation
+python -c "import flask, sklearn, joblib, numpy; print('All packages installed successfully!')"
+
+# Run the app
+python app.py
