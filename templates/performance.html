@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Performance - SolarVision</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f9fafb;
+    }
+
+    nav {
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 40px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    nav .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #4f46e5;
+    }
+
+    nav .logo span {
+      color: #6d28d9;
+      margin-left: 5px;
+    }
+
+    nav .links a {
+      margin-left: 26px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+
+    nav .links a.active {
+      background: #7c3aed;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 30px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .container h2 {
+      color: #4c1d95;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    canvas {
+      max-width: 100%;
+      margin: 30px 0;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">
+      <img src="https://img.icons8.com/ios-filled/24/sun--v1.png" style="margin-right: 8px;" />
+      Solar<span>Vision</span>
+    </div>
+    <div class="links">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('chart') }}">Chart</a>
+      <a href="{{ url_for('prediction') }}">Predict</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>📊 Fault-wise Accuracy Performance</h2>
+    <canvas id="faultChart"></canvas>
+
+    <h2>🤖 Model Comparison</h2>
+    <canvas id="modelChart"></canvas>
+  </div>
+
+  <script>
+    // Fault-wise Accuracy Chart
+    const faultCtx = document.getElementById('faultChart').getContext('2d');
+    new Chart(faultCtx, {
+      type: 'bar',
+      data: {
+        labels: ['No Module Fault', 'Fault', 'Partial Shading'],
+        datasets: [{
+          label: 'Accuracy (%)',
+          data: [96.25, 93.75, 92.5],
+          backgroundColor: ['#10b981', '#f59e0b', '#6366f1'],
+          borderRadius: 10,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context) => context.parsed.y + '%'
+            }
+          }
+        }
+      }
+    });
+
+    // Model Accuracy Comparison Chart
+    const modelCtx = document.getElementById('modelChart').getContext('2d');
+    new Chart(modelCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Existing (ANN)', 'Proposed (RF)'],
+        datasets: [{
+          label: 'Overall Accuracy (%)',
+          data: [98, 100],
+          backgroundColor: ['#fbbf24', '#10b981'],
+          borderRadius: 10,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context) => context.parsed.y + '%'
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
